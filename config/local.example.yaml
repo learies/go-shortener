@@ -1,0 +1,5 @@
+# local.example.yaml
+env: "local"  # Operating mode: local, dev, prod
+server:
+  host: "localhost"  # Host server (0.0.0.0 exterior access)
+  port: "8080"       # Post server
