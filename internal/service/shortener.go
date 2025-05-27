@@ -25,6 +25,10 @@ func (us *URLShortener) GenerateShortURL(url string) (string, error) {
 	hasher.Write([]byte(url))
 	hash := hasher.Sum(nil)
 
-	shortURL := base64.URLEncoding.EncodeToString(hash)[:8]
-	return shortURL, nil
+	encoded := base64.URLEncoding.EncodeToString(hash)
+	if len(encoded) < 8 {
+		return "", errors.New("generated hash is too short")
+	}
+
+	return encoded[:8], nil
 }

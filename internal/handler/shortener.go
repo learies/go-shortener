@@ -29,6 +29,11 @@ func (h *Handler) CreateShortLink() http.HandlerFunc {
 			ShortURL:    shortURL,
 		}
 
+		if err := h.storage.Add(response); err != nil {
+			http.Error(w, "failed to save URL", http.StatusInternalServerError)
+			return
+		}
+
 		jsonResponse, err := json.Marshal(response)
 		if err != nil {
 			http.Error(w, "can't encode JSON", http.StatusInternalServerError)

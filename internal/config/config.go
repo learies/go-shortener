@@ -13,6 +13,9 @@ type Config struct {
 		Host string `yaml:"host" env-default:"localhost"`
 		Port string `yaml:"port" env-default:"8080"`
 	} `yaml:"server"`
+	Postgres struct {
+		URI string `yaml:"uri"`
+	} `yaml:"postgres"`
 }
 
 func MustLoadConfig() *Config {

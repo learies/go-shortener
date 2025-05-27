@@ -3,11 +3,13 @@ package app
 import (
 	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/learies/go-shortener/internal/config"
 	"github.com/learies/go-shortener/internal/handler"
 	"github.com/learies/go-shortener/internal/router"
 	"github.com/learies/go-shortener/internal/service"
+	"github.com/learies/go-shortener/internal/storage/postgres"
 )
 
 type App struct {
@@ -18,7 +20,13 @@ type App struct {
 func NewApp(cfg *config.Config) *App {
 	shortener := service.NewURLShortener()
 
-	h := handler.NewHandler(shortener)
+	storage, err := postgres.NewStorage(cfg)
+	if err != nil {
+		slog.Error("failed to create storage", "error", err)
+		os.Exit(1)
+	}
+
+	h := handler.NewHandler(shortener, storage)
 	r := router.NewRouter(h)
 
 	return &App{
