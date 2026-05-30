@@ -19,10 +19,10 @@ GO := go
 # Например: make build GOFLAGS="-race"
 GOFLAGS :=
 
-# Итерация для запуска автотестов.
-# По умолчанию запускается iter1.
-# Можно переопределить так: make autotest ITER=iter2
-ITER ?= iter1
+# Номер итерации для автотестов.
+# По умолчанию запускается TestIteration1.
+# Пример: make autotest ITER=2
+ITER ?= 1
 
 # Список phony-целей.
 # Они не создают файлы с такими именами, а являются командами Makefile.
@@ -41,15 +41,15 @@ build:
 clean:
 	rm -f $(BIN)
 
-# Собирает приложение и запускает внешний автотест shortenertest.
+# Собирает приложение и запускает shortenertest.
 #
-# Пример:
-#   make autotest
-#   make autotest ITER=iter2
-#
-# Важно:
-#   В Makefile символ $ экранируется как $$.
-#   Поэтому ^$(ITER)$$ превратится для shell в ^iter1$
+# make autotest        -> TestIteration1
+# make autotest ITER=2 -> TestIteration2
+# make autotest ITER=3 -> TestIteration3
+
+# В Makefile символ $ экранируется как $$,
+# поэтому $$ в конце нужен для регулярки:
+# ^TestIteration1$
 autotest: build
-	shortenertest -test.v -test.run=^$(ITER)$$ \
+	shortenertest -test.v -test.run=^TestIteration$(ITER)$$ \
 		-binary-path=$(BIN)
