@@ -3,14 +3,20 @@ package app
 import (
 	"log/slog"
 	"net/http"
+
+	"github.com/learies/go-shortener/internal/router"
 )
 
 // App represents the application.
-type App struct{}
+type App struct {
+	router router.Router
+}
 
 // New creates a new App instance.
 func New() *App {
-	return &App{}
+	return &App{
+		router: router.New(),
+	}
 }
 
 // Run starts the HTTP server.
@@ -19,5 +25,5 @@ func (a *App) Run() error {
 
 	slog.Info("Listening server", "address", addr)
 
-	return http.ListenAndServe(addr, nil)
+	return http.ListenAndServe(addr, a.router)
 }
