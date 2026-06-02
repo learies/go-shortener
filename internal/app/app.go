@@ -6,6 +6,7 @@ import (
 
 	"github.com/learies/go-shortener/internal/handler"
 	"github.com/learies/go-shortener/internal/router"
+	"github.com/learies/go-shortener/internal/service"
 )
 
 // App represents the application.
@@ -15,7 +16,7 @@ type App struct {
 
 // New creates a new App instance.
 func New() *App {
-	shortenerHandler := handler.New()
+	shortenerHandler := handler.New(service.New())
 
 	return &App{
 		router: router.New(shortenerHandler),

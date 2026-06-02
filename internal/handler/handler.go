@@ -1,13 +1,21 @@
 package handler
 
-import "net/http"
+import (
+	"net/http"
+)
+
+type ShortenerService interface{ any }
 
 // Handler handles HTTP requests.
-type Handler struct{}
+type Handler struct {
+	service ShortenerService
+}
 
 // New creates a new Handler instance.
-func New() *Handler {
-	return &Handler{}
+func New(service ShortenerService) *Handler {
+	return &Handler{
+		service: service,
+	}
 }
 
 // CreateShortURL handles URL shortening requests.
