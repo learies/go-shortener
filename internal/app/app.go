@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"net/http"
 
+	"github.com/learies/go-shortener/internal/handler"
 	"github.com/learies/go-shortener/internal/router"
 )
 
@@ -14,8 +15,10 @@ type App struct {
 
 // New creates a new App instance.
 func New() *App {
+	shortenerHandler := handler.New()
+
 	return &App{
-		router: router.New(),
+		router: router.New(shortenerHandler),
 	}
 }
 

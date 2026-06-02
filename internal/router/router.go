@@ -2,6 +2,8 @@ package router
 
 import (
 	"net/http"
+
+	"github.com/learies/go-shortener/internal/handler"
 )
 
 // Router represents an HTTP request router.
@@ -14,8 +16,10 @@ type serveMux struct {
 }
 
 // New creates a new Router instance.
-func New() Router {
+func New(shortenerHandler *handler.Handler) Router {
 	mux := http.NewServeMux()
+
+	mux.Handle("POST /", http.HandlerFunc(shortenerHandler.CreateShortURL))
 
 	return &serveMux{
 		mux: mux,
