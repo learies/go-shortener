@@ -20,6 +20,7 @@ func New(shortenerHandler *handler.Handler) Router {
 	mux := http.NewServeMux()
 
 	mux.Handle("POST /", http.HandlerFunc(shortenerHandler.CreateShortURL))
+	mux.Handle("GET /{shortID}", http.HandlerFunc(shortenerHandler.Redirect))
 
 	return &serveMux{
 		mux: mux,

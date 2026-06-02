@@ -35,11 +35,11 @@ func (s *Shortener) Create(originalURL string) string {
 }
 
 // Get returns the original URL by short ID.
-func (s *Shortener) Get(id string) (string, error) {
+func (s *Shortener) Get(shortID string) (string, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
-	originalURL, exists := s.urls[id]
+	originalURL, exists := s.urls[shortID]
 	if !exists {
 		return "", ErrNotFound
 	}
