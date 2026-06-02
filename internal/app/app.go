@@ -1,0 +1,33 @@
+package app
+
+import (
+	"log/slog"
+	"net/http"
+
+	"github.com/learies/go-shortener/internal/handler"
+	"github.com/learies/go-shortener/internal/router"
+	"github.com/learies/go-shortener/internal/service"
+)
+
+// App represents the application.
+type App struct {
+	router router.Router
+}
+
+// New creates a new App instance.
+func New() *App {
+	shortenerHandler := handler.New(service.New())
+
+	return &App{
+		router: router.New(shortenerHandler),
+	}
+}
+
+// Run starts the HTTP server.
+func (a *App) Run() error {
+	addr := "localhost:8080"
+
+	slog.Info("Listening server", "address", addr)
+
+	return http.ListenAndServe(addr, a.router)
+}
